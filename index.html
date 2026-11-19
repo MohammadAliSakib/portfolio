@@ -103,6 +103,19 @@
     .skill-group h3 { margin: 0 0 8px; font-size: 17px; }
     .skill-group p { margin: 0; color: var(--muted); font-size: 14px; }
     .certificate-area { min-height: 12px; }
+    .certificates-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; perspective: 1200px; }
+    .certificate-card { position: relative; overflow: hidden; min-height: 188px; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 20px; background: linear-gradient(145deg, #fff, #f8f6ff); padding: 22px; box-shadow: 0 11px 0 -3px #d8d1f4, 0 23px 38px rgba(45,34,100,.13), inset 0 1px 0 #fff; transform-style: preserve-3d; transition: transform .28s, box-shadow .28s; }
+    .certificate-card::before { content: ''; position: absolute; top: 0; left: 18px; right: 18px; height: 4px; border-radius: 0 0 8px 8px; background: linear-gradient(90deg, var(--teal), var(--link), var(--coral)); }
+    .certificate-card:nth-child(2)::before { background: linear-gradient(90deg, var(--gold), var(--coral)); }
+    .certificate-card:nth-child(3)::before { background: linear-gradient(90deg, #168b89, var(--teal)); }
+    .certificate-card:hover { transform: translateY(-9px) rotateX(4deg) rotateY(-1deg); box-shadow: 0 16px 0 -3px #c9c0f1, 0 34px 48px rgba(45,34,100,.2), inset 0 1px 0 #fff; }
+    .certificate-icon { display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: 13px; border-radius: 13px; color: white; background: linear-gradient(140deg, var(--link), #9c69ed); box-shadow: 0 5px 0 -2px #cbc0f6, 0 9px 16px rgba(101,72,232,.25); font-size: 18px; font-weight: 900; }
+    .certificate-card:nth-child(2) .certificate-icon { background: linear-gradient(140deg, #168b89, var(--teal)); box-shadow: 0 5px 0 -2px #b4e5dc, 0 9px 16px rgba(36,183,165,.2); }
+    .certificate-card:nth-child(3) .certificate-icon { background: linear-gradient(140deg, #de6b66, var(--coral)); box-shadow: 0 5px 0 -2px #f4c8c0, 0 9px 16px rgba(255,127,114,.2); }
+    .certificate-card strong { display: block; margin-bottom: 7px; font-size: 16px; line-height: 1.4; }
+    .certificate-card p { margin: 0 0 16px; color: var(--muted); font-size: 13px; }
+    .certificate-link { align-self: flex-start; margin-top: auto; padding: 7px 11px; border-radius: 9px; color: white !important; background: linear-gradient(120deg, #6548e8, #9270ef); box-shadow: 0 4px 0 #4836a6, 0 8px 14px rgba(101,72,232,.18); font-size: 12px; font-weight: 800; text-decoration: none !important; transition: transform .2s, box-shadow .2s; }
+    .certificate-link:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #4836a6, 0 11px 18px rgba(101,72,232,.24); }
     .activities-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; perspective: 1200px; }
     .activity-item { min-height: 148px; }
     .activity-item strong { display: block; margin-bottom: 7px; font-size: 16px; line-height: 1.4; }
@@ -134,6 +147,7 @@
       .overview { margin: 18px 0 36px; border-radius: 24px; }
       .section { margin: 20px 0; padding: 26px 20px; border-radius: 21px; }
       .education-list, .project-grid, .skills-grid { grid-template-columns: 1fr; }
+      .certificates-grid { grid-template-columns: 1fr; }
       .project-item { min-height: 0; }
       .activities-grid { grid-template-columns: 1fr; }
       .section-heading { align-items: start; flex-direction: column; gap: 8px; }
@@ -284,7 +298,26 @@
     <section class="section" id="activities">
       <div class="section-heading"><h2>Certificates &amp; Activities</h2><span class="section-kicker">EXTRACURRICULAR</span></div>
       <h3 class="subsection-title">Certificates</h3>
-      <div class="certificate-area" aria-label="Certificate entries will be added later"></div>
+      <div class="certificates-grid" aria-label="Certificates">
+        <article class="certificate-card">
+          <span class="certificate-icon">RD</span>
+          <strong>Research Design</strong>
+          <p>Certificate of completion · Elsevier · 4 hours 50 minutes · 27 September 2026</p>
+          <a class="certificate-link" href="research-design-certificate.pdf" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
+        </article>
+        <article class="certificate-card">
+          <span class="certificate-icon">RM</span>
+          <strong>Research Data Management</strong>
+          <p>Certificate of completion · Elsevier · 4 hours 55 minutes · 28 September 2026</p>
+          <a class="certificate-link" href="research-data-management-certificate.pdf" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
+        </article>
+        <article class="certificate-card">
+          <span class="certificate-icon">IC</span>
+          <strong>ICPC Asia Dhaka Preliminary Contest</strong>
+          <p>Contest achievement · 2023 Asia Dhaka Preliminary Round · Challenge certificate</p>
+          <a class="certificate-link" href="2024-ICPC%202023%20Asia%20Dhaka%20Preli-Mohammad%20Ali%20Sakib-CHALLENGE.pdf" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
+        </article>
+      </div>
       <h3 class="subsection-title">Volunteer Activities</h3>
       <div class="activities-grid">
         <article class="activity-item">
