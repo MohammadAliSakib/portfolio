@@ -112,18 +112,18 @@
     .skill-group h3 { margin: 0 0 8px; font-size: 17px; }
     .skill-group p { margin: 0; color: var(--muted); font-size: 14px; }
     .certificates-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; perspective: 1200px; }
-    .activity-panels { display: grid; gap: 14px; }
-    .activity-panel, .certificate-category { overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(145deg, #fff, #f8f6ff); box-shadow: 0 8px 0 -3px #d8d1f4, 0 17px 30px rgba(45,34,100,.1), inset 0 1px 0 #fff; }
-    .activity-panel > summary, .certificate-category > summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; cursor: pointer; list-style: none; }
-    .activity-panel > summary::-webkit-details-marker, .certificate-category > summary::-webkit-details-marker { display: none; }
-    .activity-panel > summary { padding: 18px 22px; color: #393263; background: linear-gradient(120deg, #f5f2ff, #eefaf8); font-size: 18px; font-weight: 800; }
-    .certificate-category > summary { padding: 14px 18px; border-radius: 12px; color: #393263; background: var(--soft); font-size: 15px; font-weight: 800; }
-    .activity-panel > summary::after, .certificate-category > summary::after { content: '+'; flex: 0 0 auto; color: var(--link); font-size: 22px; line-height: 1; }
-    .activity-panel[open] > summary::after, .certificate-category[open] > summary::after { content: '-'; }
-    .activity-panel[open] > summary { border-bottom: 1px solid var(--line); }
-    .activity-panel-content { padding: 22px; }
-    .certificate-category + .certificate-category { margin-top: 16px; }
-    .certificate-category .activity-panel-content { padding: 16px 0 0; }
+    .activity-panels { display: grid; gap: 20px; }
+    .certificate-categories { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .certificate-category-button { min-height: 112px; display: flex; align-items: center; gap: 14px; width: 100%; padding: 20px; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(145deg, #fff, #f8f6ff); color: var(--ink); text-align: left; cursor: pointer; box-shadow: 0 8px 0 -3px #d8d1f4, 0 17px 30px rgba(45,34,100,.1), inset 0 1px 0 #fff; transition: transform .24s, box-shadow .24s, border-color .24s, background .24s; }
+    .certificate-category-button:hover, .certificate-category-button.is-active { transform: translateY(-4px); border-color: #bcb0f2; background: linear-gradient(130deg, #f3efff, #eefaf8); box-shadow: 0 11px 0 -3px #c9c0f1, 0 23px 36px rgba(45,34,100,.16), inset 0 1px 0 #fff; }
+    .category-icon { display: grid; place-items: center; flex: 0 0 48px; width: 48px; height: 48px; border-radius: 14px; color: white; background: linear-gradient(140deg, var(--link), #9c69ed); box-shadow: 0 5px 0 -2px #cbc0f6, 0 9px 16px rgba(101,72,232,.25); font-size: 17px; font-weight: 900; }
+    .certificate-category-button:nth-child(2) .category-icon { background: linear-gradient(140deg, #168b89, var(--teal)); box-shadow: 0 5px 0 -2px #b4e5dc, 0 9px 16px rgba(36,183,165,.2); }
+    .category-copy { display: grid; gap: 4px; }
+    .category-copy strong { font-size: 17px; line-height: 1.35; }
+    .category-copy small { color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .category-action { margin-left: auto; color: var(--link); font-size: 12px; font-weight: 800; white-space: nowrap; }
+    .certificate-results { margin-top: 20px; }
+    .certificate-results[hidden], .activities-grid[hidden] { display: none; }
     .certificate-card { position: relative; overflow: hidden; min-height: 188px; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 20px; background: linear-gradient(145deg, #fff, #f8f6ff); padding: 22px; box-shadow: 0 11px 0 -3px #d8d1f4, 0 23px 38px rgba(45,34,100,.13), inset 0 1px 0 #fff; transform-style: preserve-3d; transition: transform .28s, box-shadow .28s; }
     .certificate-card::before { content: ''; position: absolute; top: 0; left: 18px; right: 18px; height: 4px; border-radius: 0 0 8px 8px; background: linear-gradient(90deg, var(--teal), var(--link), var(--coral)); }
     .certificate-card:nth-child(2)::before { background: linear-gradient(90deg, var(--gold), var(--coral)); }
@@ -172,6 +172,7 @@
       .section { margin: 20px 0; padding: 26px 20px; border-radius: 21px; }
       .education-list, .project-grid, .skills-grid { grid-template-columns: 1fr; }
       .certificates-grid { grid-template-columns: 1fr; }
+      .certificate-categories { grid-template-columns: 1fr; }
       .project-item { min-height: 0; }
       .activities-grid { grid-template-columns: 1fr; }
       .section-heading { align-items: start; flex-direction: column; gap: 8px; }
@@ -328,95 +329,93 @@
     <section class="section" id="activities">
       <div class="section-heading"><h2>Certificates &amp; Activities</h2><span class="section-kicker">EXTRACURRICULAR</span></div>
       <div class="activity-panels">
-        <details class="activity-panel" id="certificatesPanel">
-          <summary>Certificates</summary>
-          <div class="activity-panel-content">
-            <details class="certificate-category">
-              <summary>Publications</summary>
-              <div class="activity-panel-content">
-                <div class="certificates-grid" aria-label="Publication certificates">
-                  <article class="certificate-card">
-                    <span class="certificate-icon">PC</span>
-                    <strong>A Deep Learning Framework for Skeleton-Based Gender Recognition from Drone Videos</strong>
-                    <p>Paper presentation certificate · PECCII 2026 · Paper 764 · PUST</p>
-                    <a class="certificate-link" href="CamScanner%2011-20-2026%2000.11.pdf#page=1" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
-                  </article>
-                  <article class="certificate-card">
-                    <span class="certificate-icon">QP</span>
-                    <strong>EfficientNet-B0 for Drone-Based Skeleton Gait Recognition</strong>
-                    <p>Paper presentation certificate · QPAIN 2026 · Paper 2342 · IEEE Photonics Society Bangladesh Chapter</p>
-                    <a class="certificate-link" href="CamScanner%2011-20-2026%2000.11.pdf#page=2" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
-                  </article>
-                  <article class="certificate-card">
-                    <span class="certificate-icon">UC</span>
-                    <strong>Elevated View Gait Biometrics: Efficient Skeleton-Based Recognition Using UAV Captured Videos</strong>
-                    <p>Certificate of appreciation · UCICS 2026 · Paper 75 · Varendra University</p>
-                    <a class="certificate-link" href="CamScanner%2011-20-2026%2000.11.pdf#page=3" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
-                  </article>
-                  <article class="certificate-card">
-                    <span class="certificate-icon">UC</span>
-                    <strong>Rice Leaf Disease Detection Using Vision Transformer and Transfer Learning-Based Architectures</strong>
-                    <p>Certificate of appreciation · UCICS 2026 · Paper 69 · Varendra University</p>
-                    <a class="certificate-link" href="CamScanner%2011-20-2026%2000.11.pdf#page=4" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
-                  </article>
-                </div>
-              </div>
-            </details>
-            <details class="certificate-category">
-              <summary>Extracurricular Activities</summary>
-              <div class="activity-panel-content">
-                <div class="certificates-grid" aria-label="Extracurricular certificates">
-                  <article class="certificate-card">
-                    <span class="certificate-icon">RD</span>
-                    <strong>Research Design</strong>
-                    <p>Certificate of completion · Elsevier · 4 hours 50 minutes · 27 September 2026</p>
-                    <a class="certificate-link" href="research-design-certificate.pdf" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
-                  </article>
-                  <article class="certificate-card">
-                    <span class="certificate-icon">RM</span>
-                    <strong>Research Data Management</strong>
-                    <p>Certificate of completion · Elsevier · 4 hours 55 minutes · 28 September 2026</p>
-                    <a class="certificate-link" href="research-data-management-certificate.pdf" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
-                  </article>
-                  <article class="certificate-card">
-                    <span class="certificate-icon">IC</span>
-                    <strong>ICPC Asia Dhaka Preliminary Contest</strong>
-                    <p>Contest achievement · 2023 Asia Dhaka Preliminary Round · Challenge certificate</p>
-                    <a class="certificate-link" href="2024-ICPC%202023%20Asia%20Dhaka%20Preli-Mohammad%20Ali%20Sakib-CHALLENGE.pdf" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
-                  </article>
-                </div>
-              </div>
-            </details>
+        <div class="certificate-browser" id="certificatesPanel">
+          <div class="certificate-categories" aria-label="Certificate categories">
+            <button class="certificate-category-button" type="button" aria-controls="publicationCertificates" aria-expanded="false">
+              <span class="category-icon">P</span>
+              <span class="category-copy"><strong>Publications</strong><small>Conference presentation and appreciation certificates</small></span>
+              <span class="category-action">View certificates</span>
+            </button>
+            <button class="certificate-category-button" type="button" aria-controls="extracurricularCertificates" aria-expanded="false">
+              <span class="category-icon">E</span>
+              <span class="category-copy"><strong>Extracurricular Activities</strong><small>Research training and contest certificates</small></span>
+              <span class="category-action">View certificates</span>
+            </button>
           </div>
-        </details>
-        <details class="activity-panel" id="activitiesPanel">
-          <summary>Activities</summary>
-          <div class="activity-panel-content">
-            <div class="activities-grid">
-              <article class="activity-item">
-                <strong>Technical Volunteer</strong>
-                <p>Provided technical support, event coordination, and conference management.</p>
-                <span class="activity-meta">PECCII 2026 · PUST</span>
-                <a class="certificate-link" href="CamScanner%2011-20-2026%2000.09.pdf" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
+          <div class="certificate-results" id="publicationCertificates" hidden>
+            <div class="certificates-grid" aria-label="Publication certificates">
+              <article class="certificate-card">
+                <span class="certificate-icon">PC</span>
+                <strong>A Deep Learning Framework for Skeleton-Based Gender Recognition from Drone Videos</strong>
+                <p>Paper presentation certificate · PECCII 2026 · Paper 764 · PUST</p>
+                <a class="certificate-link" href="CamScanner%2011-20-2026%2000.11.pdf#page=1" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
               </article>
-              <article class="activity-item">
-                <strong>Volunteer</strong>
-                <p>Supported contest coordination, participant management, and event organization.</p>
-                <span class="activity-meta">National High School Programming Contest 2026 · Regional Round, PUST</span>
+              <article class="certificate-card">
+                <span class="certificate-icon">QP</span>
+                <strong>EfficientNet-B0 for Drone-Based Skeleton Gait Recognition</strong>
+                <p>Paper presentation certificate · QPAIN 2026 · Paper 2342 · IEEE Photonics Society Bangladesh Chapter</p>
+                <a class="certificate-link" href="CamScanner%2011-20-2026%2000.11.pdf#page=2" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
               </article>
-              <article class="activity-item">
-                <strong>Program Organizer</strong>
-                <p>Assisted in organizing and managing workshop activities.</p>
-                <span class="activity-meta">Inception Workshop 2026 · ICSETEP-RDG-B-9</span>
+              <article class="certificate-card">
+                <span class="certificate-icon">UC</span>
+                <strong>Elevated View Gait Biometrics: Efficient Skeleton-Based Recognition Using UAV Captured Videos</strong>
+                <p>Certificate of appreciation · UCICS 2026 · Paper 75 · Varendra University</p>
+                <a class="certificate-link" href="CamScanner%2011-20-2026%2000.11.pdf#page=3" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
               </article>
-              <article class="activity-item">
-                <strong>Volunteer</strong>
-                <p>Supported registration, contest management, and communication during the event.</p>
-                <span class="activity-meta">Intra University Programming Contest 3.0 · CSE, PUST</span>
+              <article class="certificate-card">
+                <span class="certificate-icon">UC</span>
+                <strong>Rice Leaf Disease Detection Using Vision Transformer and Transfer Learning-Based Architectures</strong>
+                <p>Certificate of appreciation · UCICS 2026 · Paper 69 · Varendra University</p>
+                <a class="certificate-link" href="CamScanner%2011-20-2026%2000.11.pdf#page=4" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
               </article>
             </div>
           </div>
-        </details>
+          <div class="certificate-results" id="extracurricularCertificates" hidden>
+            <div class="certificates-grid" aria-label="Extracurricular certificates">
+              <article class="certificate-card">
+                <span class="certificate-icon">RD</span>
+                <strong>Research Design</strong>
+                <p>Certificate of completion · Elsevier · 4 hours 50 minutes · 27 September 2026</p>
+                <a class="certificate-link" href="research-design-certificate.pdf" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
+              </article>
+              <article class="certificate-card">
+                <span class="certificate-icon">RM</span>
+                <strong>Research Data Management</strong>
+                <p>Certificate of completion · Elsevier · 4 hours 55 minutes · 28 September 2026</p>
+                <a class="certificate-link" href="research-data-management-certificate.pdf" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
+              </article>
+              <article class="certificate-card">
+                <span class="certificate-icon">IC</span>
+                <strong>ICPC Asia Dhaka Preliminary Contest</strong>
+                <p>Contest achievement · 2023 Asia Dhaka Preliminary Round · Challenge certificate</p>
+                <a class="certificate-link" href="2024-ICPC%202023%20Asia%20Dhaka%20Preli-Mohammad%20Ali%20Sakib-CHALLENGE.pdf" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
+              </article>
+            </div>
+          </div>
+        </div>
+        <div class="activities-grid" id="activitiesPanel" hidden>
+          <article class="activity-item">
+            <strong>Technical Volunteer</strong>
+            <p>Provided technical support, event coordination, and conference management.</p>
+            <span class="activity-meta">PECCII 2026 · PUST</span>
+            <a class="certificate-link" href="CamScanner%2011-20-2026%2000.09.pdf" target="_blank" rel="noopener noreferrer">View certificate ↗</a>
+          </article>
+          <article class="activity-item">
+            <strong>Volunteer</strong>
+            <p>Supported contest coordination, participant management, and event organization.</p>
+            <span class="activity-meta">National High School Programming Contest 2026 · Regional Round, PUST</span>
+          </article>
+          <article class="activity-item">
+            <strong>Program Organizer</strong>
+            <p>Assisted in organizing and managing workshop activities.</p>
+            <span class="activity-meta">Inception Workshop 2026 · ICSETEP-RDG-B-9</span>
+          </article>
+          <article class="activity-item">
+            <strong>Volunteer</strong>
+            <p>Supported registration, contest management, and communication during the event.</p>
+            <span class="activity-meta">Intra University Programming Contest 3.0 · CSE, PUST</span>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -437,6 +436,23 @@
     const primaryNav = document.getElementById('primaryNav');
     const activitiesDropdown = document.getElementById('activitiesDropdown');
     const activitiesDropdownToggle = document.getElementById('activitiesDropdownToggle');
+    const certificatesPanel = document.getElementById('certificatesPanel');
+    const activitiesPanel = document.getElementById('activitiesPanel');
+    const certificateCategoryButtons = document.querySelectorAll('.certificate-category-button');
+    certificateCategoryButtons.forEach(button => button.addEventListener('click', () => {
+      const results = document.getElementById(button.getAttribute('aria-controls'));
+      const shouldOpen = results.hidden;
+      document.querySelectorAll('.certificate-results').forEach(panel => panel.hidden = true);
+      certificateCategoryButtons.forEach(category => {
+        category.classList.remove('is-active');
+        category.setAttribute('aria-expanded', 'false');
+      });
+      if (shouldOpen) {
+        results.hidden = false;
+        button.classList.add('is-active');
+        button.setAttribute('aria-expanded', 'true');
+      }
+    }));
     menuToggle.addEventListener('click', () => {
       const isOpen = primaryNav.classList.toggle('is-open');
       menuToggle.setAttribute('aria-expanded', String(isOpen));
@@ -454,7 +470,18 @@
     });
     activitiesDropdown.querySelectorAll('.nav-dropdown-menu a').forEach(link => link.addEventListener('click', () => {
       const target = document.getElementById(link.hash.slice(1));
-      if (target && target.tagName.toLowerCase() === 'details') target.open = true;
+      if (target === certificatesPanel) {
+        certificatesPanel.hidden = false;
+        activitiesPanel.hidden = true;
+        document.querySelectorAll('.certificate-results').forEach(panel => panel.hidden = true);
+        certificateCategoryButtons.forEach(button => {
+          button.classList.remove('is-active');
+          button.setAttribute('aria-expanded', 'false');
+        });
+      } else if (target === activitiesPanel) {
+        certificatesPanel.hidden = true;
+        activitiesPanel.hidden = false;
+      }
       activitiesDropdown.classList.remove('is-open');
       activitiesDropdownToggle.setAttribute('aria-expanded', String(activitiesDropdown.matches(':hover')));
     }));
