@@ -34,6 +34,15 @@
     .nav-links a { padding: 9px 13px; border-radius: 11px; color: #44415e; font-size: 13px; font-weight: 700; text-decoration: none; white-space: nowrap; transition: transform .2s, background .2s, color .2s; }
     .nav-links a:hover { transform: translateY(-2px); background: #f0edff; color: var(--link); }
     .nav-links a[aria-current="page"] { background: linear-gradient(135deg, #6c4df5, #9b64ed); color: white; box-shadow: 0 4px 0 #4836a6, 0 10px 20px rgba(101,72,232,.3); }
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-toggle { display: inline-flex; align-items: center; gap: 10px; padding: 9px 13px; border: 0; border-radius: 11px; background: transparent; color: #44415e; cursor: pointer; font: inherit; font-size: 13px; font-weight: 700; white-space: nowrap; transition: transform .2s, background .2s, color .2s; }
+    .nav-dropdown-toggle::after { content: ''; width: 7px; height: 7px; margin-top: -4px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); }
+    .nav-dropdown-toggle:hover, .nav-dropdown.is-open .nav-dropdown-toggle { transform: translateY(-2px); background: #f0edff; color: var(--link); }
+    .nav-dropdown-menu { position: absolute; top: 100%; right: 0; z-index: 20; display: none; min-width: 210px; padding: 8px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.98); box-shadow: 0 14px 30px rgba(42,34,100,.18); }
+    .nav-dropdown.is-open .nav-dropdown-menu { display: grid; }
+    .nav-dropdown-menu a { display: block; padding: 10px 12px; border-radius: 9px; white-space: normal; }
+    .nav-dropdown-menu a:hover { transform: none; }
+    @media (min-width: 1051px) { .nav-dropdown:hover .nav-dropdown-menu { display: grid; } }
     .menu-button { display: none; border: 1px solid var(--line); border-radius: 11px; background: white; color: var(--ink); padding: 8px 12px; font-size: 20px; box-shadow: 0 4px 0 #d8d2ed, 0 9px 16px rgba(42,34,100,.12); }
     main { width: min(1440px, calc(100% - 64px)); margin: 0 auto; }
     .overview { position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr) 355px; align-items: center; gap: clamp(30px, 4vw, 60px); margin: 30px 0 54px; padding: clamp(28px, 3.2vw, 48px); border: 1px solid rgba(255,255,255,.25); border-radius: 32px; color: white; background: linear-gradient(125deg, #181536 0%, #3b3281 58%, #247986 100%); box-shadow: 0 18px 0 -7px rgba(101,72,232,.22), 0 38px 78px rgba(33,28,84,.32), inset 0 1px 0 rgba(255,255,255,.18); }
@@ -143,6 +152,9 @@
       .nav-links { display: none; flex: 1 0 100%; flex-direction: column; align-items: stretch; gap: 0; }
       .nav-links.is-open { display: flex; }
       .nav-links a { padding: 11px 8px; }
+      .nav-dropdown { width: 100%; }
+      .nav-dropdown-toggle { width: 100%; justify-content: space-between; padding: 11px 8px; text-align: left; }
+      .nav-dropdown-menu { position: static; min-width: 0; margin: 0 0 8px 8px; padding: 4px; border: 0; border-radius: 10px; background: #f8f6ff; box-shadow: none; }
       .overview { grid-template-columns: minmax(0, 1fr) 300px; }
       .project-grid { grid-template-columns: repeat(2, 1fr); }
       .skills-grid { grid-template-columns: repeat(2, 1fr); }
@@ -182,7 +194,13 @@
         <a href="#projects">Projects</a>
         <a href="#publications">Publications</a>
         <a href="#skills">Skills</a>
-        <a href="#activities">Certificates & Activities</a>
+        <div class="nav-dropdown" id="activitiesDropdown">
+          <button class="nav-dropdown-toggle" id="activitiesDropdownToggle" type="button" aria-controls="activitiesDropdownMenu" aria-expanded="false">Certificates &amp; Activities</button>
+          <div class="nav-dropdown-menu" id="activitiesDropdownMenu">
+            <a href="#certificatesPanel">Certificates</a>
+            <a href="#activitiesPanel">Activities</a>
+          </div>
+        </div>
         <a href="#contact">Contact</a>
       </nav>
     </div>
@@ -310,7 +328,7 @@
     <section class="section" id="activities">
       <div class="section-heading"><h2>Certificates &amp; Activities</h2><span class="section-kicker">EXTRACURRICULAR</span></div>
       <div class="activity-panels">
-        <details class="activity-panel">
+        <details class="activity-panel" id="certificatesPanel">
           <summary>Certificates</summary>
           <div class="activity-panel-content">
             <details class="certificate-category">
@@ -371,7 +389,7 @@
             </details>
           </div>
         </details>
-        <details class="activity-panel">
+        <details class="activity-panel" id="activitiesPanel">
           <summary>Activities</summary>
           <div class="activity-panel-content">
             <div class="activities-grid">
@@ -417,10 +435,42 @@
   <script>
     const menuToggle = document.getElementById('menuToggle');
     const primaryNav = document.getElementById('primaryNav');
+    const activitiesDropdown = document.getElementById('activitiesDropdown');
+    const activitiesDropdownToggle = document.getElementById('activitiesDropdownToggle');
     menuToggle.addEventListener('click', () => {
       const isOpen = primaryNav.classList.toggle('is-open');
       menuToggle.setAttribute('aria-expanded', String(isOpen));
       menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+    });
+    activitiesDropdownToggle.addEventListener('click', () => {
+      const isOpen = activitiesDropdown.classList.toggle('is-open');
+      activitiesDropdownToggle.setAttribute('aria-expanded', String(isOpen || activitiesDropdown.matches(':hover')));
+    });
+    activitiesDropdown.addEventListener('mouseenter', () => activitiesDropdownToggle.setAttribute('aria-expanded', 'true'));
+    activitiesDropdown.addEventListener('mouseleave', () => {
+      if (!activitiesDropdown.classList.contains('is-open')) {
+        activitiesDropdownToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+    activitiesDropdown.querySelectorAll('.nav-dropdown-menu a').forEach(link => link.addEventListener('click', () => {
+      const target = document.getElementById(link.hash.slice(1));
+      if (target && target.tagName.toLowerCase() === 'details') target.open = true;
+      activitiesDropdown.classList.remove('is-open');
+      activitiesDropdownToggle.setAttribute('aria-expanded', String(activitiesDropdown.matches(':hover')));
+    }));
+    document.addEventListener('click', event => {
+      if (!activitiesDropdown.contains(event.target)) {
+        activitiesDropdown.classList.remove('is-open');
+        activitiesDropdownToggle.setAttribute('aria-expanded', 'false');
+        activitiesDropdownToggle.blur();
+      }
+    });
+    activitiesDropdown.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        activitiesDropdown.classList.remove('is-open');
+        activitiesDropdownToggle.setAttribute('aria-expanded', 'false');
+        activitiesDropdownToggle.focus();
+      }
     });
     primaryNav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
       primaryNav.classList.remove('is-open');
